@@ -2,21 +2,18 @@ module Day1 where
 
 import Utils
 
-import qualified Data.Vector as V
-
 fileContent = $(getFile)
 
 -- * Generics
 
 val i = ord i - ord '0'
 
-go (V.fromList -> v) offset = V.sum (V.map f (zipIndex v))
+go l offset = sum (map f (zip l l'))
   where
-    l = V.length v
-    f (i, cur)
-      | cur == (v V.! ((i + offset) `mod` l)) = val cur
+    l' = drop offset (cycle l)
+    f (i, i')
+      | i == i' = val i
       | otherwise = 0
-
 
 -- * FIRST problem
 day code = go code 1

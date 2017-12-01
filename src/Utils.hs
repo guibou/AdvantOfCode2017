@@ -1,17 +1,28 @@
 module Utils (
   module Utils
   , module Test.Hspec
+  , module Debug.Trace
   , HashMap
   , Set
   , Map
   , Vector
+  , module Data.Function.Memoize
+  , module Text.Megaparsec
+  , module Text.Megaparsec.Char
+  , readMaybe
   , ord
+  , module Data.Function
+  , module Data.Functor
+  , module Control.Monad
+  , module Data.Foldable
+  , module Data.Traversable
   , (<>)
   , chr
              ) where
 
-import qualified Text.Megaparsec.String as P
-import qualified Text.Megaparsec as P
+import Text.Megaparsec
+import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char
 
 import Crypto.Hash.MD5 (hash)
 import Data.ByteString.Base16 (encode)
@@ -39,6 +50,17 @@ import qualified Data.Vector as V
 import Data.Char (toLower)
 
 import Language.Haskell.TH.Syntax
+import Data.Void
+import Control.Monad (void)
+
+import Text.Read (readMaybe)
+import Debug.Trace
+
+import Data.Function.Memoize
+import Data.Function
+import Data.Functor
+import Data.Foldable
+import Data.Traversable
 
 -- So I can use it in the shell
 -- dayX <$$> content
@@ -47,7 +69,7 @@ import Language.Haskell.TH.Syntax
 
 infixl 4 <$$>
 
--- Torus enum
+-- * Torus enum
 
 -- |
 -- >>> data Test = A | B | C | D deriving (Bounded, Enum, Show)
@@ -70,17 +92,10 @@ nWrap d e = let idx = fromEnum e
                 m = (fromEnum (maxBound :: t)) + 1
             in toEnum ((idx + d) `mod` m)
 
-count x l = countIf (==x) l
+countItem x l = countIf (==x) l
 
 countIf p l = length (filter p l)
 
-
--- | Wrapper around parse, to avoid the Right unpacking which is painful
--- in a competitive context
-parse :: P.Parser t -> String -> t
-parse parser s = case P.parse parser "" s of
-  Right r -> r
-  Left err -> error (show err)
 
 bfs :: Ord p => (Set p -> Set p -> Int -> Bool) -> p -> (p -> [p]) -> (Set p, Set p, Int)
 bfs stopCriterion start stepFunction = go (Set.singleton start) (Set.empty) 0
@@ -109,3 +124,29 @@ getFile = fmap loc_module qLocation >>= \name -> embedStringFile ("content/" <> 
 
 zipIndex :: V.Vector t -> V.Vector (Int, t)
 zipIndex v = V.zip (V.enumFromN 0 (V.length v)) v
+
+-- * Parsing
+
+type Parser t = Parsec Void String t
+
+sc :: Parser ()
+sc = L.space (() <$ spaceChar) lineCmnt blockCmnt
+  where
+    lineCmnt  = L.skipLineComment "//"
+    blockCmnt = L.skipBlockComment "/*" "*/"
+
+lexeme :: Parser a -> Parser a
+lexeme = L.lexeme sc
+
+symbol :: String -> Parser String
+symbol = L.symbol sc
+
+symbol_ :: String -> Parser ()
+symbol_ s = void (symbol s)
+
+-- | Wrapper around parse, to avoid the Right unpacking which is painful
+-- in a competitive context
+parse' :: Parser t -> String -> t
+parse' parser s = case parse parser "" s of
+  Right r -> r
+  Left err -> error (show err)

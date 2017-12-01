@@ -8,10 +8,10 @@ fileContent = $(getFile)
 
 
 -- * FIRST problem
-day code = undefined
+day = undefined
 
 -- * SECOND problem
-day' code = undefined
+day' = undefined
 
 -- * Tests
 

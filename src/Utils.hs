@@ -150,3 +150,7 @@ parse' :: Parser t -> String -> t
 parse' parser s = case parse parser "" s of
   Right r -> r
   Left err -> error (show err)
+
+select :: [t] -> [(t, [t])]
+select [] = []
+select (x:xs) = (x, xs):((x:) <$$> (select xs))

@@ -6,13 +6,11 @@ fileContent = $(getFile)
 
 -- * Generics
 
-val i = ord i - ord '0'
-
 go l offset = sum (map f (zip l l'))
   where
     l' = drop offset (cycle l)
     f (i, i')
-      | i == i' = val i
+      | i == i' = digitToInt i
       | otherwise = 0
 
 -- * FIRST problem

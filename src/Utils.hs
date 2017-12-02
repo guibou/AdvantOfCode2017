@@ -10,14 +10,13 @@ module Utils (
   , module Text.Megaparsec
   , module Text.Megaparsec.Char
   , readMaybe
-  , ord
   , module Data.Function
   , module Data.Functor
   , module Control.Monad
   , module Data.Foldable
   , module Data.Traversable
   , (<>)
-  , chr
+  , module Data.Char
              ) where
 
 import Text.Megaparsec
@@ -41,7 +40,7 @@ import qualified Data.ByteString.Char8 as BS
 
 import Data.FileEmbed (embedStringFile)
 
-import Data.Char (ord, chr)
+import Data.Char
 import Data.Monoid ((<>))
 
 import Test.Hspec

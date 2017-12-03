@@ -30,7 +30,7 @@ library
                        template-haskell,
                        memoize,
                        split
-  extensions: TupleSections
+  default-extensions: TupleSections
             , DeriveAnyClass
             , StandaloneDeriving
             , DeriveGeneric

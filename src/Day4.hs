@@ -1,7 +1,6 @@
 module Day4 where
 
 import Utils
-import Data.List (sort, nub)
 
 fileContent = $(getFile)
 
@@ -11,11 +10,10 @@ parseContent s = map words (lines s)
 countPassphares isPassphrase s = countIf isPassphrase s
 
 -- * FIRST problem
--- `nub` is slow, but who cares ;)
-day = countPassphares (\v -> length (nub v) == length v)
+day = countPassphares (\v -> length (ordNub v) == length v)
 
 -- * SECOND problem
-day' = countPassphares (\v -> length (nub (map sort v)) == length v)
+day' = countPassphares (\v -> length (ordNub (map sort v)) == length v)
 
 -- * Tests
 

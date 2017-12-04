@@ -1,7 +1,6 @@
 module Day2 where
 
 import Utils
-import Data.List (find, sort)
 
 fileContent = $(getFile)
 

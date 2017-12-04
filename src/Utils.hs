@@ -16,6 +16,7 @@ module Utils (
   , module Data.Foldable
   , module Data.Traversable
   , (<>)
+  , module Data.List
   , module Data.Char
              ) where
 
@@ -29,6 +30,7 @@ import Data.ByteString.Base16 (encode)
 import Control.Parallel.Strategies (parBuffer, using, rdeepseq)
 
 import Data.List.Split (chunksOf)
+import Data.List
 
 import qualified Data.Set as Set
 import Data.Set (Set)
@@ -153,3 +155,5 @@ parse' parser s = case parse parser "" s of
 select :: [t] -> [(t, [t])]
 select [] = []
 select (x:xs) = (x, xs):((x:) <$$> (select xs))
+
+ordNub l = Set.toList (Set.fromList l)

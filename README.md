@@ -4,7 +4,7 @@ Each days are in `src/DayN.hs`.
 
 `src/DayX.hs` is the template to start each day, just replace the name "DayX" by "DayN".
 
-Starts stack with `stack ghci --no-load` to start a session and `:l YourDay'.
+Starts stack with `nix-shell --run 'cabal new-repl'` to start a session and `:l YourDay'.
 
 `Utils` contains a shitload of utils ;)
 

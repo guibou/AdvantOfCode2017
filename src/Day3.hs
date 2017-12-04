@@ -10,12 +10,21 @@ import Control.Monad (guard)
 fileContent :: Int
 fileContent = 277678
 
+data Direction = Horizontal | Vertical
+data Move = Move Direction Int
+
 -- | Enumerate the relative motion to build the spiral
 spiralSeq :: [(Int, Int)]
 -- next,                      tr,     tl      , bl,        , br
-spiralSeq = concatMap (\n -> concatMap unpackD [(1, 0), (0, - n + 1 + 1), (-n+1, 0), (0, n - 1), (n - 1, 0)]) [3, 5..]
-  where unpackD (0, dy) = replicate (abs dy) (0, signum dy)
-        unpackD (dx, 0) = replicate (abs dx) (signum dx, 0)
+spiralSeq = concatMap (\n -> concatMap unpackD [
+                          Move Horizontal 1,
+                          Move Vertical (-n + 2),
+                          Move Horizontal (-n + 1),
+                          Move Vertical (n - 1),
+                          Move Horizontal (n - 1)]) [3, 5..]
+  where unpackD (Move dir c) = replicate (abs c) (getDir dir (signum c))
+        getDir Horizontal c = (c, 0)
+        getDir Vertical c = (0, c)
 
 -- | Position of the succesive items of the spiral
 spiral = scanl (\(x, y) (dx, dy) -> (x + dx, y + dy)) (0, 0) spiralSeq
@@ -37,18 +46,19 @@ day i = distanceM (posN (i - 1))
 -- | neighbors allocation
 spiralSumKnownNeighbors :: [Int]
 -- first item is skiped because that's a special case
-spiralSumKnownNeighbors = 1: go (drop 1 spiral) (Map.singleton (0, 0) 1)
-  where go (pos@(x, y):xs) m = value:go xs m'
-          where
-            voisins = do
-              dx <- [-1..1]
-              dy <- [-1..1]
+spiralSumKnownNeighbors = map fst (scanl f (1, Map.singleton (0, 0) 1) (drop 1 spiral))
+  where
+    f (_, m) pos@(x, y) = (value, m')
+      where
+        voisins = do
+          dx <- [-1..1]
+          dy <- [-1..1]
 
-              guard ((dx, dy) /= (0, 0))
-              pure (Map.lookup (x + dx, y + dy) m)
+          guard ((dx, dy) /= (0, 0))
+          pure (Map.lookup (x + dx, y + dy) m)
 
-            value = sum $ catMaybes voisins
-            m' = Map.insert pos value m
+        value = sum $ catMaybes voisins
+        m' = Map.insert pos value m
 
 
 day' input = find (>input) spiralSumKnownNeighbors

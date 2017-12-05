@@ -15,7 +15,7 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:       Utils, Day1, Day2, Day3, Day4
+  exposed-modules:       Utils, Day1, Day2, Day3, Day4, Day5
   build-depends:       base >= 4.7 && < 5,
                        hspec,
                        megaparsec,
@@ -42,7 +42,7 @@ library
             , BinaryLiterals
             , TemplateHaskell
             , PartialTypeSignatures
-  ghc-options: -Wall -Wno-missing-signatures -fwarn-incomplete-uni-patterns -Wno-type-defaults -Wno-missing-home-modules
+  ghc-options: -Wall -Wno-missing-signatures -fwarn-incomplete-uni-patterns -Wno-missing-home-modules
 
   default-language:    Haskell2010
 

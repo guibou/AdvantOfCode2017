@@ -19,9 +19,11 @@ checksum2 l = go (sort l)
           Nothing -> checksum2 xs
 
 -- * FIRST problem
+day :: String -> Int
 day input = checksum checksum1 (parseContent input)
 
 -- * SECOND problem
+day' :: String -> Int
 day' input = checksum checksum2 (parseContent input)
 
 -- * Tests

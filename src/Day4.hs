@@ -1,11 +1,12 @@
 module Day4 where
 
 import Utils
+import qualified Data.Text as Text
 
 fileContent = $(getFile)
 
 -- * Generics
-parseContent s = map words (lines s)
+parseContent s = map ((map Text.unpack) . Text.words) (Text.lines s)
 
 countPassphares isPassphrase s = countIf isPassphrase s
 

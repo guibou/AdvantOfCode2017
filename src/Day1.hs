@@ -1,6 +1,7 @@
 module Day1 where
 
 import Utils
+import Data.Char (digitToInt)
 
 fileContent = $(getFile)
 

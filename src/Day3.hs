@@ -2,8 +2,6 @@ module Day3 where
 
 import Utils
 import qualified Data.Map as Map
-import Data.Maybe (catMaybes)
-import Control.Monad (guard)
 
 -- 11h18
 -- 11h58: both stars
@@ -33,7 +31,7 @@ spiral = scanl (\(x, y) (dx, dy) -> (x + dx, y + dy)) (0, 0) spiralSeq
 -- * FIRST problem
 
 -- | Nième item on the spiral
-posN n = spiral !! n
+posN n = spiral `unsafeIndex` n
 
 -- | distance to the center
 distanceM (x, y) = abs x + abs y

@@ -1,24 +1,19 @@
 module Utils (
-  module Utils
-  , module Test.Hspec
-  , module Debug.Trace
+    module Utils
+  , module Protolude
+  , module Unsafe
   , HashMap
-  , Set
-  , Map
   , Vector
   , module Data.Function.Memoize
-  , module Text.Megaparsec
-  , module Text.Megaparsec.Char
-  , readMaybe
-  , module Data.Function
-  , module Data.Functor
-  , module Control.Monad
-  , module Data.Foldable
-  , module Data.Traversable
-  , (<>)
-  , module Data.List
-  , module Data.Char
-             ) where
+  , describe
+  , it
+  , hspec
+  , shouldBe
+  , here
+  ) where
+
+import Protolude
+import Unsafe
 
 import Text.Megaparsec
 import qualified Text.Megaparsec.Char.Lexer as L
@@ -30,7 +25,6 @@ import Data.ByteString.Base16 (encode)
 import Control.Parallel.Strategies (parBuffer, using, rdeepseq)
 
 import Data.List.Split (chunksOf)
-import Data.List
 
 import qualified Data.Set as Set
 import Data.Set (Set)
@@ -38,34 +32,26 @@ import Data.HashMap.Strict (HashMap)
 import Data.Map.Strict (Map)
 import Data.Vector (Vector)
 
-import qualified Data.ByteString.Char8 as BS
-
 import Data.FileEmbed (embedStringFile)
 
-import Data.Char
-import Data.Monoid ((<>))
-
-import Test.Hspec
 import qualified Data.Vector as V
 
 import Data.Char (toLower)
 
 import Language.Haskell.TH.Syntax
-import Data.Void
 import Control.Monad (void)
 
 import Text.Read (readMaybe)
-import Debug.Trace
 
 import Data.Function.Memoize
-import Data.Function
-import Data.Functor
-import Data.Foldable
-import Data.Traversable
+import Test.Hspec
+import qualified Data.Text as Text
+import Data.String.Here
 
 -- So I can use it in the shell
 -- dayX <$$> content
 
+(<$$>) :: (Functor f, Functor g) => (a -> b) -> f (g a) -> f (g b)
 (<$$>) f x = (fmap . fmap) f x
 
 infixl 4 <$$>
@@ -93,8 +79,10 @@ nWrap d e = let idx = fromEnum e
                 m = (fromEnum (maxBound :: t)) + 1
             in toEnum ((idx + d) `mod` m)
 
+countItem :: Eq a => a -> [a] -> Int
 countItem x l = countIf (==x) l
 
+countIf :: (a -> Bool) -> [a] -> Int
 countIf p l = length (filter p l)
 
 
@@ -107,18 +95,14 @@ bfs stopCriterion start stepFunction = go (Set.singleton start) (Set.empty) 0
 
                         in go okSteps (Set.union todos visited) (depth + 1)
 
+md5 :: ByteString -> ByteString
 md5 = encode . hash
-md5s = BS.unpack . encode . hash . BS.pack
 
+parBufferChunks :: NFData t => [t] -> [t]
 parBufferChunks l = let chunks = (chunksOf 4096 l)
                     in mconcat chunks `using` parBuffer 20 rdeepseq
 
 --
-
-(!?) :: [a] -> Int -> Maybe a
-l !? idx
-  | idx < length l = Just (l !! idx)
-  | otherwise = Nothing
 
 getFile :: Q Exp
 getFile = fmap loc_module qLocation >>= \name -> embedStringFile ("content/" <> map toLower name)
@@ -128,7 +112,7 @@ zipIndex v = V.zip (V.enumFromN 0 (V.length v)) v
 
 -- * Parsing
 
-type Parser t = Parsec Void String t
+type Parser t = Parsec Void Text t
 
 sc :: Parser ()
 sc = L.space (() <$ spaceChar) lineCmnt blockCmnt
@@ -139,21 +123,21 @@ sc = L.space (() <$ spaceChar) lineCmnt blockCmnt
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
 
-symbol :: String -> Parser String
+symbol :: Text -> Parser Text
 symbol = L.symbol sc
 
-symbol_ :: String -> Parser ()
+symbol_ :: Text -> Parser ()
 symbol_ s = void (symbol s)
-
--- | Wrapper around parse, to avoid the Right unpacking which is painful
--- in a competitive context
-parse' :: Parser t -> String -> t
-parse' parser s = case parse parser "" s of
-  Right r -> r
-  Left err -> error (show err)
 
 select :: [t] -> [(t, [t])]
 select [] = []
 select (x:xs) = (x, xs):((x:) <$$> (select xs))
 
-ordNub l = Set.toList (Set.fromList l)
+unsafeParse :: Parser t -> Text -> t
+unsafeParse p s = case parse p "" s of
+  Right res -> res
+  Left e -> panic (Text.pack (parseErrorPretty e))
+
+-- Text utils
+unsafeRead :: Read t => Text -> t
+unsafeRead = unsafeFromJust . readMaybe . Text.unpack

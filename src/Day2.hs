@@ -1,12 +1,11 @@
 module Day2 where
 
 import Utils
-import qualified Data.Text as Text
 
 fileContent = $(getFile)
 
 -- * Generics
-parseContent f = map (map unsafeRead . Text.words) (Text.lines f)
+parseContent = unsafeRead2D
 
 checksum1 l = maximum l - minimum l
 

@@ -1,7 +1,6 @@
 module Day5 where
 
 import Utils
-import qualified Data.Text as Text
 
 import qualified Data.Vector.Unboxed.Mutable as VM
 import qualified Data.Vector.Unboxed as V
@@ -29,7 +28,7 @@ I'm stupid ;)
 -}
 
 fileContent :: [Int]
-fileContent = map unsafeRead (Text.lines $(getFile))
+fileContent = unsafeRead1D $(getFile)
 
 -- * Generics
 {-# INLINE go #-}

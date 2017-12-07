@@ -141,3 +141,12 @@ unsafeParse p s = case parse p "" s of
 -- Text utils
 unsafeRead :: Read t => Text -> t
 unsafeRead = unsafeFromJust . readMaybe . Text.unpack
+
+parse2D :: (Text -> a) -> Text -> [[a]]
+parse2D f s = map (map f . Text.words) (Text.lines s)
+
+unsafeRead2D :: Read t => Text -> [[t]]
+unsafeRead2D = parse2D unsafeRead
+
+unsafeRead1D :: Read t => Text -> [t]
+unsafeRead1D = map unsafeRead . Text.words

@@ -6,7 +6,7 @@ import qualified Data.Text as Text
 fileContent = $(getFile)
 
 -- * Generics
-parseContent s = map ((map Text.unpack) . Text.words) (Text.lines s)
+parseContent s = parse2D Text.unpack s
 
 countPassphares isPassphrase s = countIf isPassphrase s
 

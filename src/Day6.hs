@@ -1,6 +1,5 @@
 module Day6 where
 
-import qualified Data.Text as Text
 import qualified Data.Vector as V
 import qualified Data.Map as Map
 
@@ -10,7 +9,7 @@ import Utils
 -- 8h56 back from school
 -- 9h00 once I correctly understood the second star: got it
 fileContent :: V.Vector Int
-fileContent = V.fromList (map unsafeRead (Text.words $(getFile)))
+fileContent = V.fromList (unsafeRead1D $(getFile))
 
 -- * Generics
 

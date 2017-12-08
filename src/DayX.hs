@@ -2,7 +2,7 @@ module DayX where
 
 import Utils
 
-fileContent :: String
+fileContent :: Text
 fileContent = $(getFile)
 
 -- * Generics
@@ -18,6 +18,7 @@ day' = undefined
 
 -- * Tests
 
+-- test :: IO ()
 -- test = hspec $ do
 --   describe "simple examples" $ do
 --     it "of first star" $ do

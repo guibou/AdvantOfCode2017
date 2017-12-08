@@ -55,6 +55,7 @@ day' = go (\o -> if o >= 3 then o - 1 else o + 1)
 
 -- * Tests
 
+test :: IO ()
 test = hspec $ do
   describe "simple examples" $ do
     it "of first star" $ do

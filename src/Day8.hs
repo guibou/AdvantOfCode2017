@@ -100,7 +100,7 @@ testCondition :: Cond -> Map Text Int -> Bool
 testCondition (Cond reg op i) m = evalOp op (fromMaybe 0 (Map.lookup reg m)) i
 
 evalOp :: (Ord a, Eq a) => Op -> (a -> a -> Bool)
-evalOp op = case op of
+evalOp = \case
   LTE -> (<=)
   GreaterThan -> (>)
   LessThan -> (<)

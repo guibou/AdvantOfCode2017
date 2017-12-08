@@ -49,6 +49,8 @@ library
                     , GeneralizedNewtypeDeriving
                     , DerivingStrategies
                     , NoImplicitPrelude
+                    , FlexibleContexts
+                    , LambdaCase
   ghc-options: -Wall -Wno-missing-signatures -fwarn-incomplete-uni-patterns -Wno-missing-home-modules
 
   default-language:    Haskell2010

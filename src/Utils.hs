@@ -10,6 +10,7 @@ module Utils (
   , hspec
   , shouldBe
   , here
+  , chunksOf
   ) where
 
 import Protolude

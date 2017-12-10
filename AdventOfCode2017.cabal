@@ -32,7 +32,8 @@ library
                        split,
                        here,
                        protolude,
-                       text
+                       text,
+                       hex
   default-extensions: TupleSections
                     , DeriveAnyClass
                     , StandaloneDeriving

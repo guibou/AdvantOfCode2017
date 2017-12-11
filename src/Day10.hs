@@ -29,8 +29,9 @@ normalizeBob (Bob l _ offset) = take (length l) $ drop move (cycle l)
 
 -- * FIRST problem
 day :: [Int] -> Int -> Int
-day steps ini = let (a:b:_) = normalizeBob (foldSteps steps (init ini))
-                in a * b
+day steps ini = case normalizeBob (foldSteps steps (init ini)) of
+  (a:b:_) -> a * b
+  _ -> panic "WTF BBQ"
 
 -- * SECOND problem
 postFix = [17, 31, 73, 47, 23]

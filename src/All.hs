@@ -7,6 +7,10 @@ import Day4
 import Day5
 import Day6
 import Day7
+import Day8
+import Day9
+import Day10
+import Day11
 
 test = do
   Day1.test
@@ -16,3 +20,7 @@ test = do
   Day5.test
   Day6.test
   Day7.test
+  Day8.test
+  Day9.test
+  Day10.test
+  Day11.test

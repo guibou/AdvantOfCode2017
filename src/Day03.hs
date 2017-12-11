@@ -1,4 +1,4 @@
-module Day3 where
+module Day03 where
 
 import Utils
 import qualified Data.Map as Map

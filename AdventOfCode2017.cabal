@@ -33,6 +33,7 @@ library
                        here,
                        protolude,
                        text,
+                       union-find,
                        hex
   default-extensions: TupleSections
                     , DeriveAnyClass

@@ -12,6 +12,7 @@ import Day09
 import Day10
 import Day11
 import Day12
+import Day13
 
 test = do
   Day01.test
@@ -26,3 +27,4 @@ test = do
   Day10.test
   Day11.test
   Day12.test
+  Day13.test

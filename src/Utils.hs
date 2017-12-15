@@ -41,6 +41,7 @@ import qualified Data.Vector as V
 import Data.Char (toLower)
 
 import Language.Haskell.TH.Syntax
+import Language.Haskell.TH
 import Control.Monad (void)
 
 import Text.Read (readMaybe)
@@ -152,3 +153,11 @@ unsafeRead2D = parse2D unsafeRead
 
 unsafeRead1D :: Read t => Text -> [t]
 unsafeRead1D = map unsafeRead . Text.words
+
+-- * Tests Utile
+thisModuleName :: Q Exp
+thisModuleName = do
+  ModuleInfo mi <- reifyModule =<< thisModule
+  let t = filter ("Day"`isPrefixOf`) $ map (\(Module _ (ModName name)) -> name) mi
+
+  pure (ListE (map (\x -> TupE [LitE (StringL x), VarE (mkName (x ++ ".test"))]) t))

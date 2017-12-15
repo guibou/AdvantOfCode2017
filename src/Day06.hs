@@ -53,8 +53,8 @@ day' :: V.Vector Int -> Int
 day' = snd . loopDetection
 
 -- * Tests
-test :: IO ()
-test = hspec $ do
+test :: Spec
+test = do
   describe "simple examples" $ do
     let ex = V.fromList [0,2,7,0]
     it "of first star" $ do

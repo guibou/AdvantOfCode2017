@@ -63,7 +63,7 @@ day' input = find (>input) spiralSumKnownNeighbors
 
 -- * Tests
 
-test = hspec $ do
+test = do
   describe "simple examples" $ do
     it "of first star" $ do
       day 1 `shouldBe` 0

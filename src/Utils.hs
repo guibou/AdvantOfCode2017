@@ -7,6 +7,7 @@ module Utils (
   , module Data.Function.Memoize
   , describe
   , it
+  , Spec
   , hspec
   , shouldBe
   , here

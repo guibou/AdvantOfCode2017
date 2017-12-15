@@ -34,8 +34,8 @@ day' = lengthMatch (5 * 10 ^ 6) (zip (filterMod 4 $ itA startA) (filterMod 8 $ i
 
 -- * Tests
 
-test :: IO ()
-test = hspec $ do
+test :: Spec
+test = do
   describe "works" $ do
     it "on first star" $ do
       day `shouldBe` 612

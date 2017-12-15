@@ -105,8 +105,8 @@ balanceFactor l = let
 
 -- * Tests
 
-test :: IO ()
-test = hspec $ do
+test :: Spec
+test = do
   describe "simple examples" $ do
     it "of first star" $ do
       day testData `shouldBe` "tknk"

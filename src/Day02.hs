@@ -28,7 +28,7 @@ day' input = checksum checksum2 (parseContent input)
 
 -- * Tests
 
-test = hspec $ do
+test = do
 --  describe "simple examples" $ do
 --    it "of first star" $ do
 --      day "" `shouldBe` 0

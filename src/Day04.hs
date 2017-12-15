@@ -18,7 +18,7 @@ day' = countPassphares (\v -> length (ordNub (map sort v)) == length v)
 
 -- * Tests
 
-test = hspec $ do
+test = do
  describe "woks" $ do
    it "on first star" $ do
      day (parseContent fileContent) `shouldBe` 325

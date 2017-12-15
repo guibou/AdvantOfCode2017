@@ -22,7 +22,7 @@ day' code = go code (length code `div` 2)
 
 -- * Tests
 
-test = hspec $ do
+test = do
   describe "simple examples" $ do
     it "of first star" $ do
       day "1122" `shouldBe` 3

@@ -130,8 +130,8 @@ c dec -10 if a >= 1
 c inc -20 if c == 10
 |]
 
-test :: IO ()
-test = hspec $ do
+test :: Spec
+test = do
   describe "simple examples" $ do
     it "of first star" $ do
       day testString `shouldBe` 1

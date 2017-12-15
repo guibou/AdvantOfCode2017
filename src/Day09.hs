@@ -58,8 +58,8 @@ examples = [
   "{{<!>},{<!>},{<!>},{<a>}}"
   ]
 
-test :: IO ()
-test = hspec $ do
+test :: Spec
+test = do
   describe "simple examples" $ do
     it "of first star" $ do
       map day examples `shouldBe` [1,6,5,16,1,1,9,3]

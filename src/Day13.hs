@@ -62,8 +62,8 @@ day' l = let Just i = findIndex (null.process l) [0..]
 
 -- * Tests
 
-test :: IO ()
-test = hspec $ do
+test :: Spec
+test = do
   describe "simple examples" $ do
     it "of first star" $ do
       day testData `shouldBe` 24

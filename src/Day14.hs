@@ -81,8 +81,8 @@ day' key = runST $ do
 testKey :: Text
 testKey = "flqrgnkx"
 
-test :: IO ()
-test = hspec $ do
+test :: Spec
+test = do
   describe "simple examples" $ do
     it "of first star" $ do
       day testKey `shouldBe` 8108

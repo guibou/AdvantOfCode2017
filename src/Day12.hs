@@ -69,8 +69,8 @@ example = unsafeParse progs [here|0 <-> 2
 5 <-> 6
 6 <-> 4, 5|]
 
-test :: IO ()
-test = hspec $ do
+test :: Spec
+test = do
   describe "simple examples" $ do
     it "of first star" $ do
       day example `shouldBe` 6

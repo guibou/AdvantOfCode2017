@@ -58,8 +58,8 @@ day' s = knotHash (denseHash (sparseHash s 255))
 exampleLengths = [3,4,1,5]
 exampleI = 4
 
-test :: IO ()
-test = hspec $ do
+test :: Spec
+test = do
   describe "simple examples" $ do
     it "of first star" $ do
       normalizeBob (step 3 (init exampleI)) `shouldBe` [2, 1, 0, 3, 4]

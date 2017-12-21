@@ -10,6 +10,7 @@ module Utils (
   , Spec
   , hspec
   , shouldBe
+  , shouldReturn
   , here
   , chunksOf
   ) where

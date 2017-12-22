@@ -34,7 +34,9 @@ library
                        protolude,
                        text,
                        union-find,
-                       hex
+                       hex,
+                       matrix,
+                       hashable
   default-extensions: TupleSections
                     , DeriveAnyClass
                     , StandaloneDeriving

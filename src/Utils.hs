@@ -12,6 +12,7 @@ module Utils (
   , shouldBe
   , shouldReturn
   , here
+  , hereLit
   , chunksOf
   ) where
 

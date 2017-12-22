@@ -162,3 +162,14 @@ thisModuleName = do
   let t = filter ("Day"`isPrefixOf`) $ map (\(Module _ (ModName name)) -> name) mi
 
   pure (ListE (map (\x -> TupE [LitE (StringL x), VarE (mkName (x ++ ".test"))]) t))
+
+-- Cycle
+cyclePred :: forall t. (Enum t, Bounded t) => t -> t
+cyclePred o
+  | fromEnum o == fromEnum (minBound :: t) = maxBound
+  | otherwise = pred o
+
+cycleSucc :: forall t. (Enum t, Bounded t) => t -> t
+cycleSucc o
+  | fromEnum o == fromEnum (maxBound :: t) = minBound
+  | otherwise = succ o

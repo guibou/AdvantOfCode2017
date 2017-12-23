@@ -70,11 +70,11 @@ changeStep s p =
   in HashMap.insert p (cycleSucc currentStatus) s
 
 turn :: (Bounded status, Eq status, Enum status) => status -> (status -> Carrier -> Carrier) -> Game status -> (Bool, Game status)
-turn infected turnStep g@(Game grid carrier@(Carrier p _)) =
+turn infected turnFunction g@(Game grid carrier@(Carrier p _)) =
   let
     currentStatus = currentGameStatus g
 
-    carrier' = turnStep currentStatus carrier
+    carrier' = turnFunction currentStatus carrier
     grid' = changeStep grid p
   in (currentStatus == cyclePred infected, Game grid' (goForward carrier'))
 
@@ -90,7 +90,7 @@ getX (Position x _) = x
 getY (Position _ y) = y
 
 displayGrid :: (Bounded status) => (status -> Text) -> Game status -> IO ()
-displayGrid statusToText (Game grid _) =
+displayGrid statusToTextF (Game grid _) =
   let
     items = HashMap.keys grid
     minX = minimum (map getX items)
@@ -101,15 +101,15 @@ displayGrid statusToText (Game grid _) =
   in
     for_ [minY .. maxY] $ \y -> do
       for_  [minX .. maxX] $ \x -> do
-        putStr $ statusToText (fromMaybe minBound $ HashMap.lookup (Position x y) grid)
+        putStr $ statusToTextF (fromMaybe minBound $ HashMap.lookup (Position x y) grid)
       putText $ ""
 
 doit :: (Bounded status, Eq status, Enum status) => status -> (status -> Carrier -> Carrier) -> Int -> Game status -> (Game status, Int)
-doit infectedF turnStep nMax game = go game 0 0
-  where go g !count n
-          | n == nMax = (g, count)
-          | otherwise = let (infected, g') = turn infectedF turnStep g
-                        in go g' (if infected then count + 1 else count) (n + 1)
+doit infectedF turnStepF nMax game = go game 0 0
+  where go g !c n
+          | n == nMax = (g, c)
+          | otherwise = let (infected, g') = turn infectedF turnStepF g
+                        in go g' (if infected then c + 1 else c) (n + 1)
 
 -- * FIRST problem
 turnStep :: Status -> Carrier -> Carrier

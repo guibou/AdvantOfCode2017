@@ -1,7 +1,6 @@
 module Day15 where
 
 import Utils
-import Data.Bits
 
 -- start: 6:04 (train was late ;()
 -- first; 6h12
@@ -19,6 +18,7 @@ startB = 354
 
 match (a, b) = a `mod` 65536 == b `mod` 65536
 
+lengthMatch :: Int -> [(Int, Int)] -> Int
 lengthMatch n l = length (filter match (take n l))
 
 itA = iterate nextValueA
@@ -26,11 +26,11 @@ itB = iterate nextValueB
 
 -- * FIRST problem
 day :: Int
-day = lengthMatch (40 * 10 ^ 6) (zip (itA startA) (itB startB))
+day = lengthMatch (40 * pow10 6) (zip (itA startA) (itB startB))
 
 -- * SECOND problem
 day' ::Int
-day' = lengthMatch (5 * 10 ^ 6) (zip (filterMod 4 $ itA startA) (filterMod 8 $ itB startB))
+day' = lengthMatch (5 * pow10 6) (zip (filterMod 4 $ itA startA) (filterMod 8 $ itB startB))
 
 -- * Tests
 

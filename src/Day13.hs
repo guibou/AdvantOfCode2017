@@ -27,7 +27,7 @@ parseLayers s = unsafeParse (p `sepBy` (char '\n')) s
           pure (i, v)
 
 toLayers :: [(Int, Int)] -> [Int]
-toLayers l = go 0 l
+toLayers = go 0
   where
     go _ [] = []
     go idx l@((idx', size):xs)
@@ -57,8 +57,7 @@ day t = sum (map (uncurry (*)) $ process t 0)
 
 -- * SECOND problem
 day' :: [Int] -> Int
-day' l = let Just i = findIndex (null.process l) [0..]
-         in i
+day' l = unsafeFromJust (findIndex (null.process l) [0..])
 
 -- * Tests
 

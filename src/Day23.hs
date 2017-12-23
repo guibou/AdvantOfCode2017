@@ -37,25 +37,25 @@ fileContent = parseContent $(getFile)
 
 -- * Generics
 eval :: [Instr] -> Map Register Int -> (Int, Map Register Int)
-eval instr' regs = go 0 0 regs
+eval instr' regs' = go 0 0 regs'
   where
-    go pc !count regs = case instr V.!? pc of
-      Nothing -> (count, regs)
+    go pc !c regs = case instr V.!? pc of
+      Nothing -> (c, regs)
       Just i -> case i of
-        Set r roi -> go (pc + 1) count (Map.insert r (roiValue regs roi) regs)
-        Mul r roi -> go (pc + 1) (count + 1) (Map.insert r (regValue regs r * roiValue regs roi) regs)
-        Sub r roi -> go (pc + 1) count (Map.insert r (regValue regs r - roiValue regs roi) regs)
+        Set r roi -> go (pc + 1) c (Map.insert r (roiValue regs roi) regs)
+        Mul r roi -> go (pc + 1) (c + 1) (Map.insert r (regValue regs r * roiValue regs roi) regs)
+        Sub r roi -> go (pc + 1) c (Map.insert r (regValue regs r - roiValue regs roi) regs)
         Jnz roiTest roiOffset -> let
           pc' = if roiValue regs roiTest /= 0
                 then pc + roiValue regs roiOffset
                 else pc + 1
-          in go pc' count regs
-        Optimisation -> go (pc + 1) count (overrideF regs)
+          in go pc' c regs
+        Optimisation -> go (pc + 1) c overrideF
           where
-            overrideF regs = let
+            overrideF = let
               b = regs Map.! Register 'b'
               in Map.insert (Register 'f') (if isPrime b then 1 else 0) regs
-        Nop -> go (pc + 1) count regs
+        Nop -> go (pc + 1) c regs
 
     instr = V.fromList instr'
 

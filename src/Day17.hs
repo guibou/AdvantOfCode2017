@@ -65,4 +65,4 @@ test = do
     it "on first star" $ do
       day fileContent `shouldBe` 1670
     it "on second star" $ do
-      day' fileContent (50 * 10 ^ 6) `shouldBe` 2316253
+      day' fileContent (50 * pow10 6) `shouldBe` 2316253

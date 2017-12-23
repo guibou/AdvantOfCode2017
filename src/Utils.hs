@@ -174,3 +174,6 @@ cycleSucc :: forall t. (Enum t, Bounded t) => t -> t
 cycleSucc o
   | fromEnum o == fromEnum (maxBound :: t) = minBound
   | otherwise = succ o
+
+pow10 :: Int -> Int
+pow10 a = 10 ^ a

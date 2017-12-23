@@ -81,15 +81,12 @@ evalInstr instrL = go 0 (Nothing, Map.empty)
         Jgz reg roi ->
           let
             skip = roiValue regs roi
-            test = roiValue regs reg
-          in go (if test > 0 then pc + skip else (pc + 1)) (freq, regs)
+            testValue = roiValue regs reg
+          in go (if testValue > 0 then pc + skip else (pc + 1)) (freq, regs)
         Snd roi -> go (pc + 1) (Just (roiValue regs roi), regs)
-        Rcv reg ->
-          let
-            test = regValue regs reg
-          in if test /= 0
-             then freq
-             else go (pc + 1) (freq, regs)
+        Rcv reg -> if regValue regs reg /= 0
+                   then freq
+                   else go (pc + 1) (freq, regs)
 
 roiValue :: Map Register Int -> RegisterOrInt -> Int
 roiValue _ (ROIInt i) = i
@@ -119,8 +116,8 @@ run pID instrL = go 0 (Map.singleton (Register 'p') pID)
         Jgz reg roi ->
           let
             skip = roiValue regs roi
-            test = roiValue regs reg
-          in go (if test > 0 then pc + skip else (pc + 1)) regs
+            testValue = roiValue regs reg
+          in go (if testValue > 0 then pc + skip else (pc + 1)) regs
         Snd roi -> Send (roiValue regs roi) (go (pc + 1) regs)
         Rcv reg -> Recv (\x -> go (pc + 1) (Map.insert reg x regs))
 

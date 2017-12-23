@@ -9,9 +9,6 @@ import Text.Megaparsec
 import Text.Megaparsec.Char.Lexer (decimal)
 
 import Utils
-import Data.List (findIndex)
-
-import qualified Data.Map as Map
 
 fileContent :: [Action]
 fileContent = unsafeParse parser $(getFile)
@@ -41,8 +38,8 @@ f prog (Partner a b) = map swp prog
           | x == a = b
           | x == b = a
           | otherwise = x
-f prog (Exchange i j) = zipWith f [0..] prog
-  where f idx c
+f prog (Exchange i j) = zipWith g [0..] prog
+  where g idx c
           | idx == i = prog `unsafeIndex` j
           | idx == j = prog `unsafeIndex` i
           | otherwise = c
@@ -50,14 +47,13 @@ f prog (Exchange i j) = zipWith f [0..] prog
 -- * SECOND problem
 findRep actions prog =
   let
-    items = iterate (day actions) prog
-
     go i p
       | p == prog = i
       | otherwise = go (i + 1) (day actions p)
   in go 1 (day actions prog)
 
-day' actions prog = applyN (10 ^ 9 `mod` (findRep actions prog)) (day actions) prog
+day' :: [Action] -> [Char] -> [Char]
+day' actions prog = applyN (pow10 9 `mod` (findRep actions prog)) (day actions) prog
 
 applyPerm perm prog = map (\idx -> prog `unsafeIndex` idx) perm
 

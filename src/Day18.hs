@@ -43,7 +43,7 @@ parseInstr = choice
   , parseBinOp "jgz" Jgz parseRegisterOrInt parseRegisterOrInt
   ]
 
-parseBinOp :: Text -> (a -> b -> Instr) -> Parser a -> Parser b -> Parser Instr
+parseBinOp :: Text -> (a -> b -> c) -> Parser a -> Parser b -> Parser c
 parseBinOp s ctor a b = ctor <$> (string s >> char ' ' *> a) <*> (char ' ' *> b)
 
 parseUnOp :: Text -> (a -> Instr) -> Parser a -> Parser Instr

@@ -13,6 +13,7 @@ import qualified Data.HashMap.Strict as HashMap
 -- 9h54
 -- 11h19: star 1
 -- goto fly..`
+-- Two days later, trying to do star 2: 18h39 -> 19h16 (seriously, I was taking so much RAM...) ;)
 
 type Rule = (M.Matrix Pixel, M.Matrix Pixel)
 
@@ -87,8 +88,15 @@ splitMatrix n m = M.matrix s s f
     f (l', c') = let (l, c) = (l' - 1, c' - 1) in M.submatrix (l * n + 1) ((l + 1) * n) (c * n + 1) ((c + 1) * n) m
 
 joinMatrix :: M.Matrix (M.Matrix t) -> M.Matrix t
-joinMatrix m' = let m = M.toLists m'
-                in unsafeFromJust $ foldr1May (M.<->) (map (\ml -> unsafeFromJust $ foldr1May (M.<|>) ml) m)
+joinMatrix m = M.matrix s s f
+  where
+    s = M.nrows m * subs
+    subs = M.nrows (M.unsafeGet 1 1 m)
+
+    f (l, c) = let
+      (bigL, smallL) = (l - 1) `divMod` subs
+      (bigC, smallC) = (c - 1) `divMod` subs
+      in M.unsafeGet (smallL + 1) (smallC + 1) (M.unsafeGet (bigL + 1) (bigC + 1) m)
 
 -- * FIRST problem
 process :: [Rule] -> Int -> M.Matrix Pixel
@@ -123,4 +131,4 @@ test = do
     it "on first star" $ do
       day fileContent `shouldBe` 150
     it "on second star" $ do
-      day' fileContent `shouldBe` undefined
+      day' fileContent `shouldBe` 2606275

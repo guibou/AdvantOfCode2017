@@ -21,8 +21,6 @@ data Triple (t :: Mode) = Triple Int Int Int
 data Point = Point (Triple 'Position) (Triple 'Velocity) (Triple 'Acceleration)
   deriving (Show, Ord, Eq)
 
-
-
 fileContent :: [Point]
 fileContent = parseContent $(getFile)
 

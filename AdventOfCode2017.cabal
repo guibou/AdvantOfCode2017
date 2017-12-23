@@ -55,6 +55,7 @@ library
                     , NoImplicitPrelude
                     , FlexibleContexts
                     , LambdaCase
+                    , TypeApplications
   ghc-options: -Wall -Wno-missing-signatures -fwarn-incomplete-uni-patterns -Wno-missing-home-modules
 
   default-language:    Haskell2010

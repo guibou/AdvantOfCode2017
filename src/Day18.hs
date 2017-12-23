@@ -20,7 +20,7 @@ fileContent = $(getFile)
 data Register = Register Char
   deriving (Show, Ord, Eq)
 data RegisterOrInt = ROI Register | ROIInt Int
-  deriving (Show)
+  deriving (Show, Eq)
 
 data Instr = Snd RegisterOrInt
            | Rcv Register
